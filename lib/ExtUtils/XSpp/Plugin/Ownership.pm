@@ -5,6 +5,7 @@ use warnings;
 
 use File::ShareDir;
 
+use ExtUtils::XSpp::Node::Type;
 use ExtUtils::XSpp::Plugin::Ownership::Typemap;
 
 our $VERSION = '0.01';
