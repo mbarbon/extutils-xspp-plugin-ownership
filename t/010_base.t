@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use t::lib::XSP::Test tests => 2;
+use t::lib::XSP::Test tests => 3;
 
 run_diff xsp_stdout => 'expected';
 
@@ -76,3 +76,46 @@ Foo::bar( int a, int b, int c )
   OUTPUT: RETVAL
   CLEANUP:
     Xsp::Plugin::Ownership::xsp_set_perl_owned(aTHX_ ST(0), false);
+
+=== Argument
+--- xsp_stdout
+%module{Foo};
+
+%loadplugin{Ownership};
+
+class Foo %catch{nothing}
+{
+    int foo( int a, int b, int c %TransferToPerl );
+    int bar( int a, int b %TransferToCpp, int c );
+};
+--- expected
+#include <exception>
+
+
+MODULE=Foo
+
+MODULE=Foo PACKAGE=Foo
+
+int
+Foo::foo( int a, int b, int c )
+  CODE:
+    try {
+      Xsp::Plugin::Ownership::xsp_set_perl_owned(aTHX_ ST(3), true);
+      RETVAL = THIS->foo( a, b, c );
+    }
+    catch (...) {
+      croak("Caught C++ exception of unknown type");
+    }
+  OUTPUT: RETVAL
+
+int
+Foo::bar( int a, int b, int c )
+  CODE:
+    try {
+      Xsp::Plugin::Ownership::xsp_set_perl_owned(aTHX_ ST(2), false);
+      RETVAL = THIS->bar( a, b, c );
+    }
+    catch (...) {
+      croak("Caught C++ exception of unknown type");
+    }
+  OUTPUT: RETVAL

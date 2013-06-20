@@ -40,6 +40,13 @@ sub call_function_code {
     }
 }
 
+sub precall_code {
+    my ($self, $pvar, $index, $cvar) = @_;
+
+    return sprintf "Xsp::Plugin::Ownership::xsp_set_perl_owned(aTHX_ %s, %s)",
+               $pvar, ($self->{OWN} ? 'true' : 'false');
+}
+
 sub _is_reference {
     my ($self) = @_;
 

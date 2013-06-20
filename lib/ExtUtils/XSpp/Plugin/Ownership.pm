@@ -76,7 +76,11 @@ sub handle_method_tag {
 
 sub handle_argument_tag {
     my ($self, $argument, $tag, %args) = @_;
-    die;
+    my ($method, $index) = ($argument->function, $argument->index);
+
+    $method->set_arg_typemap($index,
+                             _wrap_typemap($method->arg_typemap($index),
+                                           own => $tag eq 'TransferToPerl'));
 
     return 1;
 }
