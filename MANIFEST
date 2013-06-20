@@ -7,4 +7,5 @@ cpp/ownership.h
 lib/ExtUtils/XSpp/Plugin/Ownership.pm
 lib/ExtUtils/XSpp/Plugin/Ownership/Typemap.pm
 t/001_load.t
+t/010_base.t
 t/lib/XSP/Test.pm
