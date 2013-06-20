@@ -68,7 +68,8 @@ EOC
 sub handle_method_tag {
     my ($self, $method, $tag, %args) = @_;
 
-    $method->set_ret_typemap(_wrap_typemap($method->ret_typemap, own => 0));
+    $method->set_ret_typemap(_wrap_typemap($method->ret_typemap,
+                                           own => $tag eq 'TransferToPerl'));
 
     return 1;
 }
